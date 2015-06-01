@@ -1,0 +1,5 @@
+user>こんにちわ
+tweet>おはようね @keokeo_pirusu
+
+user>またね
+bye>またね
