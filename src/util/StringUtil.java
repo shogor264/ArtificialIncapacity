@@ -9,7 +9,7 @@ import debug.Debug;
 
 public class StringUtil {
 	public static boolean isNullOrEmpty(String str) {
-		return str == null || "".equals(str);
+		return str == null || "".equals(str) || "null".equals(str);
 	}
 
 	public static boolean isSpace(String targetStr) {

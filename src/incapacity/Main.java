@@ -14,6 +14,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import util.CommonUtil;
 import debug.Info;
 
 public class Main {
@@ -30,10 +31,17 @@ public class Main {
 		this.talkList = talkList;
 	}
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) {
 		Info.isInfo = true;
-		ArtificialIncapacityUtil.createTalkList(new Name[] { Name.BYE, Name.SAME, Name.PATTERN, Name.TWEET, Name.WIKI,
-				Name.GOOGLE, Name.SUGGEST, Name.RANDOM });
+		try {
+			ArtificialIncapacityUtil.createTalkList(new Name[] { Name.BYE, Name.SAME, Name.PATTERN, Name.TWEET,
+					Name.WIKI, Name.GOOGLE, Name.SUGGEST, Name.RANDOM });
+		} catch (IOException e) {
+			Info.log("リソースファイルパスが誤っているか、設定ファイルがありません。環境変数（\"" + CommonUtil.ENV_RESOURCES_PATH
+					+ "\"）にresourcesフォルダのパスを正しく設定するか、各種Talk.txtファイルを配置してください。");
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
 		Main main = new Main();
 		main.setTalkList(ArtificialIncapacityUtil.getTalkList());
 		//		main.exec();
@@ -41,7 +49,7 @@ public class Main {
 		System.exit(0);
 	}
 
-	public Main() throws IOException {
+	public Main() {
 		// 初期処理
 	}
 

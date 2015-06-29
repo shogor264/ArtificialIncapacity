@@ -11,7 +11,14 @@ import incapacity.talk.TalkTwitter;
 import incapacity.talk.TalkWiki;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import util.CommonUtil;
+import util.StringUtil;
+import debug.Debug;
 
 public class ArtificialIncapacityUtil {
 	private static final Main main;
@@ -21,14 +28,34 @@ public class ArtificialIncapacityUtil {
 	}
 
 	static {
-		// TODO 自動生成されたコンストラクター・スタブ
-		try {
-			main = new Main();
-		} catch (IOException e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
-			throw new Error(e);
-		}
+
+		// 環境変数からユーザ情報を取得
+		Map<String, String> propertyKeyMap = new HashMap<>();
+		propertyKeyMap.put("ARTIFICIAL_INCAPACITY_RESOURCES_PATH",CommonUtil.ENV_RESOURCES_PATH);
+		//System.
+		//			List<Map<String, String>> envMapList = Arrays.asList((Map<String,String>)System.getenv("USER"), (Map<String,String>)System.getenv());
+		Map<String, String> envMap = System.getenv();
+		Debug.log("envMap:" + envMap);
+		for (Entry<String, String> entry : propertyKeyMap.entrySet()) {
+			String propKey = entry.getValue();
+			String envKey = entry.getKey();
+			Debug.log("propKey:" + propKey);
+			Debug.log("envKey:" + envKey);
+			// VMパラメータに設定されている場合、そのまま使う
+			if (!StringUtil.isNullOrEmpty(System.getProperty(propKey))) {
+				continue;
+			}
+			// VMパラメータになく、環境変数に設定されている場合、
+			Debug.log("envMap.get(envKey):" + envMap.get(envKey));
+			if (envMap.containsKey(envKey)) {
+				System.setProperty(propKey, envMap.get(envKey));
+				continue;
+			}
+			// VMパラメータにも環境変数にもない。
+			Debug.log("VMパラメータ：" + propKey + " および 環境変数：" + envKey + " 未指定です。");
+
+		} // TODO 自動生成されたコンストラクター・スタブ
+		main = new Main();
 	}
 
 	/**
@@ -47,16 +74,17 @@ public class ArtificialIncapacityUtil {
 		}
 		List<Talk> talkList = main.getTalkList();
 		talkList.clear();
+		String parentPath = System.getProperty(CommonUtil.ENV_RESOURCES_PATH);
 		for (Name name : nameAry) {
 			if (Name.BYE.equals(name)) {
 				// ※上から優先で判定する
-				talkList.add(new TalkBye("resources/ByeTalk.txt", Name.BYE.toString()));
+				talkList.add(new TalkBye(parentPath + "/ByeTalk.txt", Name.BYE.toString()));
 			} else if (Name.SAME.equals(name)) {
 				// 同じことばかり言ってた時
-				talkList.add(new TalkSame("resources/SameTalk.txt", Name.SAME.toString()));
+				talkList.add(new TalkSame(parentPath + "/SameTalk.txt", Name.SAME.toString()));
 			} else if (Name.PATTERN.equals(name)) {
 				// 定型パターン
-				talkList.add(new TalkPattern("resources/PatternTalk.txt", Name.PATTERN.toString()));
+				talkList.add(new TalkPattern(parentPath + "/PatternTalk.txt", Name.PATTERN.toString()));
 			} else if (Name.TWEET.equals(name)) {
 				// ツイッター
 				talkList.add(new TalkTwitter(null, Name.TWEET.toString()));
@@ -71,7 +99,7 @@ public class ArtificialIncapacityUtil {
 				talkList.add(new TalkGoogleSuggest(null, Name.SUGGEST.toString()));
 			} else if (Name.RANDOM.equals(name)) {
 				// ランダム
-				talkList.add(new TalkRandom("resources/RandomTalk.txt", Name.RANDOM.toString()));
+				talkList.add(new TalkRandom(parentPath + "/RandomTalk.txt", Name.RANDOM.toString()));
 			} else {
 				throw new IllegalArgumentException(name + "：対応するTalk処理がありません。");
 			}

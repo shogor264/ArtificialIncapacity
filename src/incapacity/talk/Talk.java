@@ -39,6 +39,8 @@ public abstract class Talk {
 		List<String> list = null;
 		if (Files.exists(path)) {
 			list = Files.readAllLines(path);
+		} else {
+			throw new IOException("パスが見つかりません");
 		}
 
 		return createData(list);
