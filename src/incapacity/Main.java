@@ -34,12 +34,46 @@ public class Main {
 		Info.isInfo = true;
 		ArtificialIncapacityUtil.createTalkList(new Name[] { Name.BYE, Name.SAME, Name.PATTERN, Name.TWEET, Name.WIKI,
 				Name.GOOGLE, Name.SUGGEST, Name.RANDOM });
-		new Main().exec();
+		Main main = new Main();
+		main.setTalkList(ArtificialIncapacityUtil.getTalkList());
+		//		main.exec();
+		main.test();
 		System.exit(0);
 	}
 
 	public Main() throws IOException {
 		// 初期処理
+	}
+
+	/**
+	 * デバッグ用同期メソッド
+	 * @throws InterruptedException
+	 */
+	private void test() {
+		//			InputHistory.readHistory();
+		Info.log("会話をしよう。（終わる時は「" + TalkBye.END + "」と言ってね）");
+		try {
+			while (true) {
+
+				String input = input();
+				if (input == null) {
+					continue;
+				}
+
+				for (Talk talk : talkList) {
+					if (talk.isTalk(input)) {
+						talk.talk();
+					}
+				}
+				System.out.println(ArtificialIncapacityUtil.getTalkString(input));
+				//			execThread(input);
+
+			}
+		} catch (InterruptedException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
+
 	}
 
 	private void exec() {
@@ -52,7 +86,8 @@ public class Main {
 				continue;
 			}
 
-			execThread(input);
+			System.out.println(ArtificialIncapacityUtil.getTalkString(input));
+			//			execThread(input);
 
 		}
 

@@ -40,7 +40,8 @@ public class TweetSearchAPIUtil {
 		propertyKeyMap.put("OAUTH_CONSUMER_SECRET", "twitter4j.oauth.consumerSecret");
 		propertyKeyMap.put("OAUTH_ACCESS_TOKEN", "twitter4j.oauth.accessToken");
 		propertyKeyMap.put("OAUTH_ACCESS_TOKEN_SECRET", "twitter4j.oauth.accessTokenSecret");
-
+//System.
+//		List<Map<String, String>> envMapList = Arrays.asList((Map<String,String>)System.getenv("USER"), (Map<String,String>)System.getenv());
 		Map<String, String> envMap = System.getenv();
 		Debug.log("envMap:" + envMap);
 		for (Entry<String, String> entry : propertyKeyMap.entrySet()) {

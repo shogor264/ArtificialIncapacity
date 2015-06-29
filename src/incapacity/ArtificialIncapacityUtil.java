@@ -79,6 +79,10 @@ public class ArtificialIncapacityUtil {
 		main.setTalkList(talkList);
 	}
 
+	protected static List<Talk> getTalkList() {
+		return main.getTalkList();
+	}
+
 	public static String getTalkString(String input) {
 		InputHistory.getInputlist().add(input);
 		InputHistory.writeHistory("user>" + input);

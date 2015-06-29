@@ -15,7 +15,7 @@ public class ProxyUtil {
 	public static void setProxy() {
 		if (!isSet) {
 			isSet = true;
-			Map<String, String> envMap = System.getenv();
+			final Map<String, String> envMap = System.getenv();
 			if (!envMap.containsKey(ENV_HOST)) {
 				// 環境変数未設定ならプロキシなし
 				return;
